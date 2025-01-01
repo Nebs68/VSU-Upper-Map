@@ -144,33 +144,16 @@
     map.addControl(zoomControl);
 
  // wms request
-  var wmsLayer = L.Geoserver.wms("http://localhost:8080/geoserver/wms", {
-    layers: "topp:BU_2020_A0_S0",
+  var wmsLayer = L.Geoserver.wms("http://localhost:8080/geoserver/webgis_workspace/wms", {
+    layers: "webgis_workspace:GCPs in Leyte",
     transparent: true,
     CQL_FILTER: "TYPE=='RC_2'",
     attribution: "My wms map of building",
   });
   wmsLayer.addTo(map);
 
-  var wfsLayer = L.Geoserver.wfs("http://localhost:8080/geoserver/wfs", {
-    layers: "topp:BU_2020_A0_S0",
-    style: {
-      color: "black",
-      fillOpacity: "0.3",
-      fillColor: "red",
-    },
-    onEachFeature: function (feature, layer) {
-      console.log(feature);
-      layer.bindPopup(
-        "this is popuped. Building type: " + feature.properties.TYPE
-      );
-    },
-    // CQL_FILTER: "district='Syangja'",
-  });
-  // wfsLayer.addTo(map);
-
-  var layerLegend = L.Geoserver.legend("http://localhost:8080/geoserver/wms", {
-    layers: "topp:BU_2020_A0_S0",
+  var layerLegend = L.Geoserver.legend("http://localhost:8080/geoserver/webgis_workspace/wms", {
+    layers: "webgis_workspace:GCPs in Leyte",
     // style: `stylefile`,
   });
 
