@@ -123,14 +123,14 @@
         new ol.layer.Tile({
           source: new ol.source.TileWMS({
             url: 'http://localhost:8080/geoserver/webgis_workspace/wms',
-            params: { 'LAYERS': 'webgis_workspace:roads', 'TILED': true },
+            params: { 'LAYERS': 'webgis_workspace:Roads', 'TILED': true },
             serverType: 'geoserver',
           }),
         }),
         new ol.layer.Tile({
           source: new ol.source.TileWMS({
             url: 'http://localhost:8080/geoserver/webgis_workspace/wms',
-            params: { 'LAYERS': 'webgis_workspace:Buildings', 'TILED': true },
+            params: { 'LAYERS': 'webgis_workspace:buildings', 'TILED': true },
             serverType: 'geoserver',
           }),
         }),
