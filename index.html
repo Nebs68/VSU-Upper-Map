@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>VSU Upper Campus Map</title>
+  <title>Leyte GCP Map</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ol@7.2.2/ol.css">
   <style>
     html, body {
@@ -38,14 +38,14 @@
     .legend-item {
       display: flex;
       align-items: center;
-      margin-bottom: 5px;
+      margin-bottom: px;
     }
 
     .legend-symbol {
-      width: 20px;
-      height: 20px;
+      width: 10px;
+      height: 16px;
       margin-right: 5px;
-      border-radius: 50%; /* Rounded for the point layer */
+      border-radius: 25%; /* Rounded for the point layer */
     }
 
     .line-symbol {
@@ -85,23 +85,17 @@
 </head>
 <body>
   <!-- Title Header -->
-  <div class="header">VSU Upper Campus Map</div>
+  <div class="header">Leyte GCP Map</div>
 
   <!-- Map container -->
   <div id="map"></div>
 
-  <!-- Legend -->
-  <div class="legend">
-    <div class="legend-item">
-      <div class="legend-symbol" style="background: #0e4a1e;"></div> Coconut trees
-    </div>
-    <div class="legend-item">
-      <div class="legend-symbol line-symbol" style="background: #0000ff;"></div> Roads
-    </div>
-    <div class="legend-item">
-      <div class="legend-symbol polygon-symbol" style="background: #44574a66;"></div> Buildings 
-    </div>
+<!-- Legend -->
+<div class="legend">
+  <div class="legend-item">
+    <div class="legend-symbol" style="background: #d3d3d3 ;">X</div> GCPs
   </div>
+</div>
 
   <script src="https://cdn.jsdelivr.net/npm/ol@7.2.2/dist/ol.js"></script>
   <script>
@@ -116,28 +110,14 @@
         new ol.layer.Tile({
           source: new ol.source.TileWMS({
             url: 'http://localhost:8080/geoserver/webgis_workspace/wms',
-            params: { 'LAYERS': 'webgis_workspace:coconut trees', 'TILED': true },
-            serverType: 'geoserver',
-          }),
-        }),
-        new ol.layer.Tile({
-          source: new ol.source.TileWMS({
-            url: 'http://localhost:8080/geoserver/webgis_workspace/wms',
-            params: { 'LAYERS': 'webgis_workspace:Roads', 'TILED': true },
-            serverType: 'geoserver',
-          }),
-        }),
-        new ol.layer.Tile({
-          source: new ol.source.TileWMS({
-            url: 'http://localhost:8080/geoserver/webgis_workspace/wms',
-            params: { 'LAYERS': 'webgis_workspace:buildings', 'TILED': true },
+            params: { 'LAYERS': 'webgis_workspace:GCPs in Leyte', 'TILED': true },
             serverType: 'geoserver',
           }),
         }),
       ],
       view: new ol.View({
-        center: ol.proj.fromLonLat([124.7954, 10.7462]),
-        zoom: 16,
+        center: ol.proj.fromLonLat([124.9591, 11.3399]),
+        zoom: 7.5,
       }),
     });
 
@@ -162,6 +142,40 @@
 
   const zoomControl = new ol.control.Zoom();
     map.addControl(zoomControl);
+
+ // wms request
+  var wmsLayer = L.Geoserver.wms("http://localhost:8080/geoserver/wms", {
+    layers: "topp:BU_2020_A0_S0",
+    transparent: true,
+    CQL_FILTER: "TYPE=='RC_2'",
+    attribution: "My wms map of building",
+  });
+  wmsLayer.addTo(map);
+
+  var wfsLayer = L.Geoserver.wfs("http://localhost:8080/geoserver/wfs", {
+    layers: "topp:BU_2020_A0_S0",
+    style: {
+      color: "black",
+      fillOpacity: "0.3",
+      fillColor: "red",
+    },
+    onEachFeature: function (feature, layer) {
+      console.log(feature);
+      layer.bindPopup(
+        "this is popuped. Building type: " + feature.properties.TYPE
+      );
+    },
+    // CQL_FILTER: "district='Syangja'",
+  });
+  // wfsLayer.addTo(map);
+
+  var layerLegend = L.Geoserver.legend("http://localhost:8080/geoserver/wms", {
+    layers: "topp:BU_2020_A0_S0",
+    // style: `stylefile`,
+  });
+
+  layerLegend.addTo(map);
+
 
   </script>
 </body>
