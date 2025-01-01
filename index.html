@@ -143,22 +143,6 @@
   const zoomControl = new ol.control.Zoom();
     map.addControl(zoomControl);
 
- // wms request
-  var wmsLayer = L.Geoserver.wms("http://localhost:8080/geoserver/webgis_workspace/wms", {
-    layers: "webgis_workspace:GCPs in Leyte",
-    transparent: true,
-    CQL_FILTER: "TYPE=='RC_2'",
-    attribution: "My wms map of building",
-  });
-  wmsLayer.addTo(map);
-
-  var layerLegend = L.Geoserver.legend("http://localhost:8080/geoserver/webgis_workspace/wms", {
-    layers: "webgis_workspace:GCPs in Leyte",
-    // style: `stylefile`,
-  });
-
-  layerLegend.addTo(map);
-
 
   </script>
 </body>
